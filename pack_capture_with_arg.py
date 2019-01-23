@@ -10,6 +10,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
+#AT RUNTIME INTERFACE NAME NEEDS TO BE PASSED. Eg. #python pack_capture_with_arg.py Gi1/0/1
 import cli,time,sys
 
 #Format current time to obtain a unique string for filename & develop a path name using that
