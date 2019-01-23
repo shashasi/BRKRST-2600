@@ -1,0 +1,8 @@
+no event manager applet UPGRADE authorization bypass
+event manager applet UPGRADE authorization bypass
+event none maxrun 300
+action 1.0 cli command "enable"
+action 1.1 cli command "install add file flash:cat9k_iosxe.16.06.05.SPA.bin activate commit" pattern "y\/n"
+action 1.2 cli command "y" pattern "y\/n"
+action 1.3 puts "Fixing to reload"
+action 1.5 cli command "y"

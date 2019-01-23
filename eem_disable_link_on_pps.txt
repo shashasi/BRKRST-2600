@@ -1,0 +1,10 @@
+event manager applet linkShutRate authorization bypass 
+event interface name te2/1/9  parameter  transmit_rate_pps entry-op ge entry-val 10 poll-interval 1 entry-type value
+action 1 cli command "en"
+action 10 syslog msg "Detecting high input rate on interface te2/1/9.  Shutting down"
+action 11 cli command "show int te2/1/9"
+action 12 syslog msg $_cli_result
+action 20 cli command "config t"
+action 21 cli command "int te2/1/9"
+action 22 cli command "shutdown"
+action 30 cli command "no event manager applet linkShutRate"

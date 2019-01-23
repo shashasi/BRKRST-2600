@@ -1,0 +1,7 @@
+event manager environment email_from mail@company.com
+event manager environment email_server 192.168.1.2
+event manager environment email_to dest_address@company.com
+event manager applet catch_syslog
+event syslog pattern "SYSLOG PATTERN HERE” maxrun 60
+action 1  info type routername
+action 10 mail server "$email_server" to "$email_to" from "$email_from" subject "SUBJECT OF EMAIL - Syslog seen on $_info_routername" body “BODY OF YOUR EMAIL GOES HERE”

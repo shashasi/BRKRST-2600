@@ -1,0 +1,32 @@
+no event manager applet high-cpu authorization bypass
+event manager applet high-cpu authorization bypass
+event snmp oid 1.3.6.1.4.1.9.9.109.1.1.1.1.3.1 get-type next entry-op gt entry-val 10 poll-interval 1 ratelimit 300 maxrun 180
+action 0.01 syslog msg "High CPU detected, gathering system information."
+action 0.02 cli command "enable"
+action 0.03 cli command "term exec prompt timestamp"
+action 0.04 cli command "term length 0"
+action 0.05 cli command "show clock"
+action 0.06 regex "([0-9]|[0-9][0-9]):([0-9]|[0-9][0-9]):([0-9]|[0-9][0-9])" $_cli_result match match1
+action 0.07 string replace "$match" 2 2 "."
+action 0.08 string replace "$_string_result" 5 5 "."
+action 0.09 set time $_string_result
+action 1.01 cli command "show proc cpu sort | append flash:tac-cpu-$time.txt"
+action 1.02 cli command "show proc cpu hist | append flash:tac-cpu-$time.txt"
+action 1.03 cli command "show proc cpu platform sorted | append flash:tac-cpu-$time.txt"
+action 1.04 cli command "show interface | append flash:tac-cpu-$time.txt"
+action 1.05 cli command "show interface stats | append flash:tac-cpu-$time.txt"
+action 1.06 cli command "show log | append flash:tac-cpu-$time.txt"
+action 1.07 cli command "show ip traffic | append flash:tac-cpu-$time.txt"
+action 1.08 cli command "show users | append flash:tac-cpu-$time.txt"
+action 1.09 cli command "show platform software fed switch active punt cause summary | append flash:tac-cpu-$time.txt"
+action 1.10 cli command "show platform software fed switch active cpu-interface | append flash:tac-cpu-$time.txt"
+action 1.11 cli command "show platform software fed switch active punt cpuq all | append flash:tac-cpu-$time.txt"
+action 2.08 cli command "no monitor capture tac_cpu"
+action 2.09 cli command "monitor capture tac_cpu control-plane in match any file location flash:tac-cpu-$time.pcap"
+action 2.10 cli command "monitor capture tac_cpu start" pattern "yes"
+action 2.11 cli command "yes"
+action 2.12 wait 10
+action 2.13 cli command "monitor capture tac_cpu stop"
+action 3.01 cli command "term default length"
+action 3.02 cli command "terminal no exec prompt timestamp"
+action 3.03 cli command "no monitor capture tac_cpu"
