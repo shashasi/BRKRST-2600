@@ -12,7 +12,7 @@
 # SUCH DAMAGE.
 #
 import re, time, cli
- 
+
 # check stack-ports summary
 show_cmd = 'show switch stack-ports summary'            
 re.search('\d+\/\d+\s+?\w+.*(\d{2,})', show_cmd)
@@ -23,7 +23,7 @@ if summary_op:
         link_ok = re.search(pattern, line)
         if link_ok:
             cli.execute("send log" + " Stack port '%s' has %s 'Changes to LinkOK'"%(link_ok.group(1), link_ok.group(2)))
- 
+
 # collect switch and its asic count 
 show_switch_op = cli.execute('show switch')
 stack_numbers = re.findall('[\*|\s](\d+)\s+?(?:Active|Standby|Member)', show_switch_op)
@@ -35,7 +35,7 @@ for stack in stack_numbers:
         count = re.search('Number of lines which match regexp \= (\d+)', asic_op)
         if count:
             switch_asic_dict.update({stack:count.group(1)})
- 
+
 # SDP counter check for non zero count against Tx Fail or Rx Fail
 pattern = re.compile(r'(\w+.*)\s+?\d+\s+?(((\d{2,}|[1-9])\s+?\d+\s+(0))|((0)\s+?\d+\s+(\d{2,}|[1-9])))')
 for stack in stack_numbers:
@@ -53,10 +53,9 @@ for stack in stack_numbers:
                 if not rx_fail:
                     rx_fail = '0'
                 cli.execute("send log" + " '%s' has %s Tx_Fail and %s Rx_Fail counters"%(message, tx_fail, rx_fail))
-
 # Register's snapshot
 cmd_list = ['show platform hardware fed switch %s fwd-asic register read register-name SifRacDataCrcErrorCnt asic %s', 'show platform hardware fed switch %s fwd-asic register read register-name SifRacRwCrcErrorCnt asic %s', 'show platform hardware fed switch %s fwd-asic register read register-name SifRacPcsCodeWordErrorCnt asic %s', 'show platform hardware fed switch %s fwd-asic register read register-name SifRacInvalidRingWordCnt asic %s']
- 
+
 snapshot = {}
 for stack in stack_numbers:
     for asic in range(int(switch_asic_dict[stack])):
@@ -81,5 +80,4 @@ for stack in stack_numbers:
         for index, cmd in enumerate(cmd_list):
             if snapshot[1][index][1] and snapshot[0][index][1]:
                 if snapshot[1][index][1] > snapshot[0][index][1]:
-                    cli.execute("send log" + " '%s' has increased from '%s' to '%s' within 5 seconds"%(snapshot[0][index][0], snapshot[0][index][1], snapshot[1][index][1]
-
+                    cli.execute("send log" + " '%s' has increased from '%s' to '%s' within 5 seconds"%(snapshot[0][index][0], snapshot[0][index][1], snapshot[1][index][1]))
