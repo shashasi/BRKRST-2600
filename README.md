@@ -1,5 +1,5 @@
 
-This folder congtains some of the scripts discusssed in BRKCRS-2452 in Cisco Live Barcelona 2019.
+This folder congtains some of the scripts discusssed in BRKRST-2600 in Cisco Live Barcelona 2020.
 
  THESE SCRIPTS ARE PROVIDED BY THE AUTHOR AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
